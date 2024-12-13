@@ -112,19 +112,15 @@
             animation: fadeIn 4s ease-in-out;
         }
 
-        .poemas {
-            margin: 20px;
-            padding: 30px;
-            background-color: #ffcc80;
-            border-radius: 8px;
-            text-align: center;
-            animation: fadeIn 4s ease-in-out;
-        }
-
         footer {
             text-align: center;
             margin: 20px;
             animation: fadeIn 2s ease-in-out;
+        }
+
+        #photo-container img {
+            max-width: 100%;
+            height: auto;
         }
 
         @keyframes fadeIn {
@@ -134,6 +130,15 @@
             to {
                 opacity: 1;
             }
+        }
+
+        .poemas {
+            margin: 20px;
+            padding: 30px;
+            background-color: #ffcc80;
+            border-radius: 8px;
+            text-align: center;
+            animation: fadeIn 4s ease-in-out;
         }
 
         @keyframes slideIn {
@@ -153,62 +158,419 @@
                 transform: translateY(-10px);
             }
         }
-
-        @keyframes zoomIn {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
+        .poema-cumpleanos {
+            margin: 20px;
+            padding: 30px;
+            background-color: #ffecb3;
+            border-radius: 8px;
+            color: #4a148c;
+            text-align: center;
+            font-size: 1.5em;
+            animation: fadeIn 4s ease-in-out;
         }
+
+        .poema-cumpleanos h2 {
+            font-size: 2.5em;
+            color: #d50000;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        .poema-cumpleanos .estrofa {
+            margin-bottom: 25px; /* Espaciado entre estrofas */
+            line-height: 1.8;
+        }
+
+        .poema-cumpleanos p {
+            margin: 0;
+        }
+
+.poema-cumpleanos {
+    margin: 20px;
+    padding: 30px;
+    background-color: #ffecb3;
+    border-radius: 8px;
+    color: #4a148c;
+    text-align: center;
+    font-size: 1.5em;
+    animation: fadeIn 4s ease-in-out;
+}
+
+.poema-cumpleanos h2 {
+    font-size: 2.5em;
+    color: #d50000;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite alternate;
+}
+
+.poema-cumpleanos .estrofa {
+    margin-bottom: 25px; /* Espaciado entre estrofas */
+    line-height: 1.8;
+}
+
+.poema-cumpleanos p {
+    margin: 0;
+}
+
     </style>
 </head>
 <body>
     <header>
         <h1>¡Feliz Cumpleaños, Mi Querida Lumi! 🎉</h1>
-        <p>Hoy, en este día tan especial, celebro tu existencia...</p>
+        <p>Hoy, en este día tan especial, celebro tu existencia. Desde que llegaste a mi vida, todo ha cambiado para mejor. Tu sonrisa ilumina mis días, y cada momento contigo es un regalo que atesoro profundamente. Cada vez que pienso en ti, mi corazón late más rápido porque sé que eres mi todo. ¡Qué suerte tengo de poder compartir este hermoso camino contigo! 💖</p>
+        <p>Mi más grande deseo es verte feliz hoy, mañana y siempre. En este día tan único, quiero recordarte lo especial que eres para mí, y lo agradecido que estoy por tenerte a mi lado. 🌟</p>
     </header>
 
     <section class="mensaje-especial">
         <h2>✨ Un Mensaje Solo para Ti ✨</h2>
-        <p>Hoy, más que nunca, quiero expresarte lo que significas para mí...</p>
+        <p>Hoy, más que nunca, quiero expresarte lo que significas para mí. Desde que llegaste a mi vida, todo tiene más color, más luz, más significado. Eres la razón por la que sonrío cada mañana y el motor que me impulsa a seguir. Mi amor por ti no tiene fin y, en este día tan especial, me gustaría que supieras lo afortunado que me siento al tenerte como mi compañera, amiga y amor eterno. Mi corazón late por ti y siempre lo hará. Te deseo un cumpleaños lleno de sonrisas, abrazos, y mucho amor, porque tú eres el mayor regalo de mi vida. 💜🌷🎂</p>
     </section>
 
-    <section class="galeria">
-        <h2>Galería de Recuerdos Juntos 📸</h2>
-        <input type="file" id="file-input" multiple accept="image/*">
-        <div id="photo-container"></div>
+<section class="galeria">
+    <h2>Galería de Recuerdos Juntos 📸</h2>
+    <input type="file" id="file-input" multiple accept="image/*">
+    <div id="photo-container"></div>
+</section>
+
+<script>
+    const container = document.getElementById('photo-container');
+
+    // Solicitar clave de administrador al cargar la página
+    const isAdmin = prompt("Ingrese la clave de administrador") === "miClaveSecreta";
+
+    // Función para guardar imágenes en localStorage
+    function saveToLocalStorage(images) {
+        localStorage.setItem('uploadedImages', JSON.stringify(images));
+    }
+
+    // Función para cargar imágenes desde localStorage
+    function loadFromLocalStorage() {
+        const images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+        images.forEach((image, index) => {
+            createImageElement(image, index);
+        });
+    }
+
+    // Crear elemento de imagen con botón de eliminación (si es admin)
+    function createImageElement(imageSrc, index) {
+        const imageWrapper = document.createElement('div');
+        imageWrapper.style.position = 'relative';
+        imageWrapper.style.display = 'inline-block';
+        imageWrapper.style.margin = '10px';
+
+        const img = document.createElement('img');
+        img.src = imageSrc;
+        img.style.width = '300px';
+        img.style.height = 'auto';
+        img.style.borderRadius = '8px';
+        img.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+
+        imageWrapper.appendChild(img);
+
+        // Agregar botón de eliminación si es admin
+        if (isAdmin) {
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '✖';
+            deleteButton.style.position = 'absolute';
+            deleteButton.style.top = '5px';
+            deleteButton.style.right = '5px';
+            deleteButton.style.backgroundColor = '#ff4444';
+            deleteButton.style.color = 'white';
+            deleteButton.style.border = 'none';
+            deleteButton.style.borderRadius = '50%';
+            deleteButton.style.width = '25px';
+            deleteButton.style.height = '25px';
+            deleteButton.style.cursor = 'pointer';
+
+            // Manejar la eliminación de imágenes
+            deleteButton.addEventListener('click', function () {
+                const images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+                images.splice(index, 1); // Eliminar la imagen del array
+                saveToLocalStorage(images); // Guardar cambios en localStorage
+                container.innerHTML = ''; // Limpiar el contenedor
+                loadFromLocalStorage(); // Recargar las imágenes actualizadas
+            });
+
+            imageWrapper.appendChild(deleteButton);
+        }
+
+        container.appendChild(imageWrapper);
+    }
+
+    // Manejar la carga de nuevas imágenes
+    document.getElementById('file-input').addEventListener('change', function (event) {
+        const images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+
+        Array.from(event.target.files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    images.push(e.target.result); // Agregar imagen al array
+                    saveToLocalStorage(images); // Guardar en localStorage
+                    container.innerHTML = ''; // Limpiar el contenedor
+                    loadFromLocalStorage(); // Recargar con las nuevas imágenes
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // Cargar imágenes al inicio
+    loadFromLocalStorage();
+</script>
+
+
+<section class="canciones">
+    <h2>Canciones Dedicadas con Todo mi Corazón 🎶</h2>
+    <div class="canciones-dedicadas">
+        <h3>Todas Las Canciones que te he dedicado hasta ahora</h3>
+        
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/nyuo9-OjNNg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/jYEp86vn9EM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/SC8cSnFTd_0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/bpOSxM0rNPM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/n4tK7LYFxI0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/rMY9oCyrUgQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="Paulo Londra - Chica Paranormal (Official Video).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/5PoNTOl_pNQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/7afuET1tsNw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="Mon Laferte - Amor Completo (Letra).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="Paulo Londra, Luck Ra, Valentino Merlo - Princesa (Letra).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="Lyrics).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="Paulo Londra - Recién Soltera (Official Video) - Paulo Londra (720p, h264, youtube).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="BESAME REMIX - BHAVI, SEVEN KAYNE, MILO J, TIAGO PZK, KHEA, NEO PISTEA.mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="QUE BELLA (lyric no oficial) Paulo Londra, Zion & Lennox.mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+    </div>
+        <!-- Incrustar video de YouTube -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/1kligLvJn6c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="el libro de la vida (te amo y más).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="Robleis - A Fuego (Official Video).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+       <!-- Elemento de video para reproducir un archivo local -->
+        <video width="560" height="315" controls>
+            <source src="Robleis - SEÑAL (Official Video).mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+</section>
+
+
+
+
+    <section class="cancion-escrita">
+        <h2>🎶 "Juntos Contra el Mundo" 🎶</h2>
+        <p>Esta es la canción que escribí solo para ti, Lumi. "Juntos Contra el Mundo" refleja todo lo que hemos vivido, todo lo que nos une, y todo lo que nos espera. Cada palabra, cada nota, es un compromiso contigo, con nuestro amor. No hay nada que pueda separarnos, porque mientras estemos juntos, podemos enfrentar todo. Te amo más de lo que las palabras pueden expresar, y esta canción es solo una muestra de ello. 💖🎤</p>
+        <audio controls>
+            <source src="Juntos Contra el Mundo.mp3" type="audio/mp3">
+            Tu navegador no soporta la etiqueta de audio.
+        </audio>
     </section>
 
-    <section class="canciones">
-        <h2>Canciones Dedicadas con Todo mi Corazón 🎶</h2>
-        <div class="canciones-dedicadas">
-            <h3>Todas Las Canciones que te he dedicado hasta ahora</h3>
-            <!-- Ejemplo de videos -->
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/nyuo9-OjNNg" frameborder="0" allowfullscreen></iframe>
+    <section class="cumpleanos">
+        <h2>🎉 ¡El Mejor Cumpleaños del Mundo! 🎉</h2>
+        <p>Hoy, celebro tu vida, tu amor y todo lo maravilloso que eres. No solo hoy, sino siempre, gracias por darme tantas razones para ser feliz. Este día es tuyo, y quiero que sientas todo el amor que te tengo. Cada segundo de tu vida es un regalo para este mundo, y para mí, eres la persona más especial de todas. ¡Feliz cumpleaños, mi amor! 🎂💫</p>
+    </section>
+
+    <section class="mensajes-personales">
+        <h2>💌 Mis Palabras para Ti 💌</h2>
+        <p>Desde lo más profundo de mi ser, te deseo el cumpleaños más hermoso de todos. No hay palabras suficientes para describir lo que siento por ti, pero quiero que sepas que estaré a tu lado siempre, compartiendo momentos hermosos y superando cualquier reto que la vida nos ponga por delante. Te amo más de lo que las palabras pueden expresar, y este día solo me recuerda lo afortunado que soy por tenerte a mi lado. 💖🌹</p>
+    </section>
+    <section class="poemas">
+        <h2>🌿 Todos los Poemas que te he Dedicado Hasta la Fecha 🌿</h2>
+        <p><strong>"Para Lumi mi Sol eterno <3 ✨✨"</strong><br>
+        Tus ojos, verdes mares, me atrapan sin cesar,<br>
+        Un universo de calma en ellos puedo hallar.<br>
+
+        <p><strong>"Tu risa, melodía que el alma serena,"</strong><br>
+        Y tu cabello de oro, un sueño que se estrena.<br>
+
+        <p><strong>"Tu compañía es maravilla para mí vida,"</strong><br>
+        me hace gozar lleno de alegría,<br>
+        a tu lado el estrés que tengo se aleja,<br>
+        cuando estoy contigo mi mente se despeja.<br>
+
+        <p><strong>"Los días contigo son versos,"</strong><br>
+        Que canto con anheló,<br>
+        Contigo he encontrado a mi otro yo,<br>
+        Eres mi complemento, mi sol, mi cielo. <3 ✨✨✨<br>
+<section class="poema-cumpleanos">
+    <h2>☀️ Poema de Cumpleaños para Mi Sol Eterno, Lumi ☄️</h2>
+    <div class="estrofa">
+        <p>
+            Hoy celebro tu vida con todo mi amor,<br>
+            mi dulce Lumi, mi eterno resplandor.<br>
+            Eres la estrella que ilumina mi ser,<br>
+            y en este día quiero agradecerte a ti, mi querer.
+        </p>
+    </div>
+    <div class="estrofa">
+        <p>
+            Tus ojos brillan más que el sol al despertar,<br>
+            y tu risa es el canto que quiero escuchar.<br>
+            Hoy, en tu cumpleaños, quiero recordarte,<br>
+            que eres mi todo, mi razón de amarte.
+        </p>
+    </div>
+    <div class="estrofa">
+        <p>
+            Que este día sea tan especial como tú,<br>
+            lleno de risas, de magia y de luz.<br>
+            Que el amor te rodee, siempre sin fin,<br>
+            porque mi vida, Lumi, es mejor junto a ti.
+        </p>
+    </div>
+    <div class="estrofa">
+        <p>
+            Te deseo un año lleno de felicidad,<br>
+            con todo lo que sueñas, con mucha bondad.<br>
+            Feliz cumpleaños, mi sol y mi flor,<br>
+            siempre serás mi más grande amor.
+        </p>
+    </div>
+</section>
+    <section class="poema-cumpleanos">
+        <h2>🌟 El Primer Poema que te Dediqué 🌟</h2>
+        <div class="estrofa">
+            <p>
+                En la frontera del deseo,<br>
+                te encuentro, mi chiquita,<br>
+                un enigma que me seduce,<br>
+                <strong>una flor que me invita.</strong>
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                Tus ojos, un mar profundo,<br>
+                en el que me ahogo sin remedio.<br>
+                Tus labios, dulce fruta,<br>
+                <strong>que ansío probar con deleite y secreto.</strong>
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                Eres la musa que inspira mi verso,<br>
+                la estrella que guía mi camino.<br>
+                El fuego que enciende mi pasión,<br>
+                <strong>el secreto que guardo en mi corazón.</strong>
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                En esta danza de seducción,<br>
+                me entrego a tu ritmo sin dudar.<br>
+                Cada paso me acerca a tu misterio,<br>
+                <strong>cada roce me invita a explorar.</strong>
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                No sé si eres un sueño o una realidad,<br>
+                pero en tu mirada encuentro la verdad.<br>
+                Un amor que me impulsa a seguirte,<br>
+                a conquistar tu corazón con mi verdad.
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                Te ofrezco mi alma y mi corazón,<br>
+                un regalo que anhelo que aceptes.<br>
+                Para que juntos escribamos nuestra canción,<br>
+                un himno a este amor que nos ha elegido.
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                Atrévete a dar el paso,<br>
+                a romper las cadenas del miedo.<br>
+                Y juntos exploremos el universo,<br>
+                <strong>de un amor que nos ha elegido.</strong>
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                En tus manos está la decisión,<br>
+                de abrir las puertas al corazón.<br>
+                Si me aceptas como tu compañero,<br>
+                juntos viviremos un amor verdadero.
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                Un amor que nos eleva y nos transforma,<br>
+                que nos llena de dicha y de paz.<br>
+                Un amor que nos sana y nos renueva,<br>
+                un amor que nos hace sentir más.
+            </p>
+        </div>
+        <div class="estrofa">
+            <p>
+                Te invito a vivir esta aventura,<br>
+                a construir un futuro de luz.<br>
+                Dejemos que el amor nos guíe,<br>
+                y juntos escribamos nuestro destino.
+            </p>
         </div>
     </section>
 
-    <section class="poemas">
-        <h2>🌿 Todos los Poemas que te he Dedicado Hasta la Fecha 🌿</h2>
-        <p><strong>"Eres mi Luna y mi Sol"</strong><br>
-        Eres mi luna y mi sol,<br>
-        el motivo de mi alegría,<br>
-        cada verso que escribo,<br>
-        tiene tu nombre escondido.</p>
-
-        <p><strong>"En tus ojos veo el universo"</strong><br>
-        Cuando miro tus ojos,<br>
-        veo un universo entero,<br>
-        lleno de amor y esperanza,<br>
-        un refugio puro y sincero.</p>
-
-        <p><strong>"Contigo en cada amanecer"</strong><br>
-        Contigo quiero despertar,<br>
-        cada mañana, cada día,<br>
-        y caminar juntos por la vida,<br>
-        sin importar lo que el destino decida.</p>
 
         <p>Estos poemas son solo una pequeña parte de todo lo que me inspiras. ¡Gracias por ser tú, mi amor! 🌟</p>
     </section>
@@ -216,5 +578,21 @@
     <footer>
         <p>Creado con ❤️ y todo mi amor para Lumi. Que este cumpleaños sea tan único y especial como tú lo eres. ¡Te amo más de lo que las palabras pueden expresar! 💕🎉</p>
     </footer>
+
+    <script>
+        document.getElementById('file-input').addEventListener('change', function (event) {
+            const container = document.getElementById('photo-container');
+            container.innerHTML = '';
+            Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    container.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 </body>
 </html>
